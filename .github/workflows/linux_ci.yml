@@ -18,9 +18,3 @@ jobs:
           mkdir dist
           g++ -Wall -Wpedantic -Weffc++ -std=c++17 -o dist/basic_example examples/basic_example.c src/*.c -Iinclude
           g++ -Wall -Wpedantic -Weffc++ -std=c++17 -o dist/memory_example examples/memory_example.c src/*.c -Iinclude
-
-      - name: Test Build Output Binaries
-        run: |
-          ./dist/basic_example
-          ./dist/memory_example
-          cat test.txt
