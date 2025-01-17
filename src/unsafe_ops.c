@@ -45,7 +45,7 @@ static void dma_setup_registers(dma_context_t* ctx, dma_sg_entry_t* entry) {
     );
     volatile_write32(
         &base[DMA_LENGTH_REG / 4],
-        entry->length
+        (uint32_t) entry->length
     );
 
     volatile_write32(&base[DMA_INT_ENABLE_REG/4], 1);
@@ -337,6 +337,8 @@ void cache_operation(void* addr, size_t size, cache_operation_t op) {
                 __asm__ volatile("mfence");
 
                 break;
+
+            default: break;
         }
     #elif defined(__arm__) || defined(__aarch64__)
         switch(op) {
@@ -351,6 +353,8 @@ void cache_operation(void* addr, size_t size, cache_operation_t op) {
             case CACHE_FLUSH:
                 __asm__ volatile("dc civac, %0" :: "r"(addr));
                 break;
+
+            default: break;
         }
     #elif defined(__riscv)
         switch(op) {
@@ -381,6 +385,8 @@ void cache_operation(void* addr, size_t size, cache_operation_t op) {
                 __asm__ volatile("fence.i" ::: "memory");
                 __asm__ volatile("fence iorw,iorw" ::: "memory");
                 break;
+
+            default: break;
         }
     #endif
 }
@@ -699,14 +705,14 @@ uint32_t byte_swap32(uint32_t value) {
 }
 
 uint64_t byte_swap64(uint64_t value) {
-    return ((value & 0xFF00000000000000ULL) >> 56) |
-        ((value & 0x00FF000000000000ULL) >> 40) |
-        ((value & 0x0000FF0000000000ULL) >> 24) |
-        ((value & 0x000000FF00000000ULL) >> 8) |
-        ((value & 0x00000000FF000000ULL) << 8) |
-        ((value & 0x0000000000FF0000ULL) << 24) |
-        ((value & 0x000000000000FF00ULL) << 40) |
-        ((value & 0x00000000000000FFULL) << 56);
+    return ((value & 0xFF00000000000000U) >> 56) |
+        ((value & 0x00FF000000000000U) >> 40) |
+        ((value & 0x0000FF0000000000U) >> 24) |
+        ((value & 0x000000FF00000000U) >> 8) |
+        ((value & 0x00000000FF000000U) << 8) |
+        ((value & 0x0000000000FF0000U) << 24) |
+        ((value & 0x000000000000FF00U) << 40) |
+        ((value & 0x00000000000000FFU) << 56);
 }
 
 void convert_endianness_buffer(void* buffer, size_t size, size_t element_size) {
@@ -734,5 +740,7 @@ void convert_endianness_buffer(void* buffer, size_t size, size_t element_size) {
                 *value = byte_swap64(*value);
             }
             break;
+
+        default: break;
     }
 }
