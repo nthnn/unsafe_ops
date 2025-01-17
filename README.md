@@ -21,18 +21,18 @@ The `unsafe_ops` library is designed to be portable across several architectures
 ### Architectures
 
 - **x86 and x86_64 (Intel/AMD)**
-    * Utilizes mfence, lfence, and sfence instructions for memory barriers.
-    * Implements cache operations using the clflush instruction.
+    * Utilizes `mfence`, `lfence`, and `sfence` instructions for memory barriers.
+    * Implements cache operations using the `clflush` instruction.
 - **ARM and AArch64**
-    * Uses dmb instructions for memory barriers (ish, ishld, ishst).
-    * Implements cache operations with dc instructions (ivac, cvac, civac).
+    * Uses `dmb` instructions for memory barriers (`ish`, `ishld`, `ishst`).
+    * Implements cache operations with dc instructions (`ivac`, `cvac`, `civac`).
 - **RISC-V**
-    - Supports cache operations with optional ZICBOM extensions (e.g., cbo.inval, cbo.clean, cbo.flush).
-    - Provides fallback options using fence instructions (fence.i, fence ow,ow).
+    - Supports cache operations with optional ZICBOM extensions (e.g., `cbo.inval`, `cbo.clean`, `cbo.flush`).
+    - Provides fallback options using `fence` instructions (`fence.i`, `fence ow,ow`).
 
 ### Operating Systems
 
-On Linux, `unsafe_ops` was tested with sysconf for retrieving page size and cache line size. Implementation of DMA functionality is using system headers like `sched.h`, `sys/mman.h`, and `unistd.h`.
+On Linux, `unsafe_ops` was tested with `sysconf` for retrieving page size and cache line size. Implementation of DMA functionality is using system headers like `sched.h`, `sys/mman.h`, and `unistd.h`.
 
 ### Requirements
 
