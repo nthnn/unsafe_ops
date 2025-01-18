@@ -19,7 +19,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unsafe_ops.h>
+
+#include <unsafe_ops.hpp>
 
 // Define volatile device control and status registers to interface with hardware
 volatile uint32_t DEVICE_CTRL_REG = 0;

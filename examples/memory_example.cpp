@@ -20,7 +20,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/mman.h>
-#include <unsafe_ops.h>
+
+#include <unsafe_ops.hpp>
 
 // Example hardware I/O port address
 #define EXAMPLE_PORT 0x0064
