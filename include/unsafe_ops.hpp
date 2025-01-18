@@ -30,9 +30,9 @@
 #ifndef UNSAFE_OPS_H
 #define UNSAFE_OPS_H
 
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
+#include <cstdint>
+#include <cstdbool>
+#include <cstddef>
 
 /**
  * @enum dma_controller_type_t
