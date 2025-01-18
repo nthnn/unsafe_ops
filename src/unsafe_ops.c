@@ -21,7 +21,6 @@
 #include <sched.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/mman.h>
 #include <unistd.h>
 
 #define DMA_CTRL_REG        0x00
@@ -310,14 +309,6 @@ bool ptr_in_range(void* ptr, void* base, size_t size) {
     uintptr_t base_addr = (uintptr_t)base;
 
     return (addr >= base_addr && addr < base_addr + size);
-}
-
-long cpu_page_size() {
-    return sysconf(_SC_PAGESIZE);
-}
-
-long cpu_cache_line_size() {
-    return sysconf(_SC_LEVEL1_DCACHE_LINESIZE);
 }
 
 void cache_operation(void* addr, size_t size, cache_operation_t op) {
@@ -629,38 +620,6 @@ void port_write32(uint16_t port, uint32_t value) {
 }
 
 #endif
-
-void* allocate_executable_memory(size_t size) {
-    void* ptr = mmap(
-        NULL, size, 
-        PROT_READ | PROT_WRITE | PROT_EXEC,
-        MAP_PRIVATE | MAP_ANONYMOUS,
-        -1, 0
-    );
-
-    return (ptr != MAP_FAILED) ? ptr : NULL;
-}
-
-void protect_memory(void* addr, size_t size, bool readable, bool writable, bool executable) {
-    int prot = 0;
-
-    if(readable)
-        prot |= PROT_READ;
-    if(writable)
-        prot |= PROT_WRITE;
-    if(executable)
-        prot |= PROT_EXEC;
-
-    mprotect(addr, size, prot);
-}
-
-int make_memory_readonly(void* addr, size_t size) {
-    return mprotect(addr, size, PROT_READ) != 0;
-}
-
-int make_memory_readwrite(void* addr, size_t size) {
-    return mprotect(addr, size, PROT_READ | PROT_WRITE) != 0;
-}
 
 void memory_copy_unaligned(void* dst, const void* src, size_t size) {
     uint8_t* d = (uint8_t*) dst;
