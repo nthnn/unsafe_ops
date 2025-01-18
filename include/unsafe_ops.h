@@ -489,49 +489,6 @@ void port_write16(uint16_t port, uint16_t value);
 void port_write32(uint16_t port, uint32_t value);
 
 /**
- * @brief Allocates memory suitable for execution.
- * 
- * @param size The size of the memory to allocate in bytes.
- * @return A pointer to the allocated memory, or NULL on failure.
- */
-void* allocate_executable_memory(size_t size);
-
-/**
- * @brief Sets memory protection attributes for a region.
- * 
- * @param addr The starting address of the memory region.
- * @param size The size of the memory region in bytes.
- * @param readable Whether the region should be readable.
- * @param writable Whether the region should be writable.
- * @param executable Whether the region should be executable.
- */
-void protect_memory(
-    void* addr,
-    size_t size,
-    bool readable,
-    bool writable,
-    bool executable
-);
-
-/**
- * @brief Makes a memory region read-only.
- * 
- * @param addr The starting address of the memory region.
- * @param size The size of the memory region in bytes.
- * @return 0 on success, or a non-zero error code on failure.
- */
-int make_memory_readonly(void* addr, size_t size);
-
-/**
- * @brief Makes a memory region read-write.
- * 
- * @param addr The starting address of the memory region.
- * @param size The size of the memory region in bytes.
- * @return 0 on success, or a non-zero error code on failure.
- */
-int make_memory_readwrite(void* addr, size_t size);
-
-/**
  * @brief Copies memory from source to destination with no alignment requirements.
  * 
  * @param dst The destination address.
