@@ -16,5 +16,5 @@ jobs:
       - name: Build Example
         run: |
           mkdir dist
-          g++ -Wall -Wpedantic -Weffc++ -std=c++17 -o dist/basic_example examples/basic_example.c src/*.c -Iinclude
-          g++ -Wall -Wpedantic -Weffc++ -std=c++17 -o dist/memory_example examples/memory_example.c src/*.c -Iinclude
+          g++ -Wall -Wpedantic -Weffc++ -std=c++23 -o dist/basic_example examples/basic_example.c src/*.c -Iinclude
+          g++ -Wall -Wpedantic -Weffc++ -std=c++23 -o dist/memory_example examples/memory_example.c src/*.c -Iinclude
