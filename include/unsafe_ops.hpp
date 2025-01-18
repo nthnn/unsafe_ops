@@ -383,7 +383,8 @@ long cpu_cache_line_size();
  * @param op The cache operation to perform (e.g., flush, invalidate).
  */
 void cache_operation(
-    void* addr, size_t size,
+    void* addr,
+    size_t size,
     cache_operation_t op
 );
 

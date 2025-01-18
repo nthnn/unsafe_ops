@@ -403,6 +403,8 @@ void prefetch_memory(void* addr, size_t size, bool write_hint) {
             (void) *ptr;
         #endif
     #endif
+
+    (void) size;
 }
 
 void memory_fence_acquire(void) {
@@ -652,26 +654,26 @@ int memory_compare_unaligned(
 }
 
 uint16_t byte_swap16(uint16_t value) {
-    return ((value & 0xFF00) >> 8) |
-        ((value & 0x00FF) << 8);
+    return static_cast<uint16_t>((value & 0xFF00) >> 8) |
+        static_cast<uint16_t>((value & 0x00FF) << 8);
 }
 
 uint32_t byte_swap32(uint32_t value) {
-    return ((value & 0xFF000000) >> 24) |
-        ((value & 0x00FF0000) >> 8) |
-        ((value & 0x0000FF00) << 8) |
-        ((value & 0x000000FF) << 24);
+    return static_cast<uint32_t>((value & 0xFF000000) >> 24) |
+        static_cast<uint32_t>((value & 0x00FF0000) >> 8) |
+        static_cast<uint32_t>((value & 0x0000FF00) << 8) |
+        static_cast<uint32_t>((value & 0x000000FF) << 24);
 }
 
 uint64_t byte_swap64(uint64_t value) {
-    return ((value & static_cast<uint64_t>(0xFF00000000000000)) >> 56) |
-        ((value & static_cast<uint64_t>(0x00FF000000000000)) >> 40) |
-        ((value & static_cast<uint64_t>(0x0000FF0000000000)) >> 24) |
-        ((value & static_cast<uint64_t>(0x000000FF00000000)) >> 8) |
-        ((value & static_cast<uint64_t>(0x00000000FF000000)) << 8) |
-        ((value & static_cast<uint64_t>(0x0000000000FF0000)) << 24) |
-        ((value & static_cast<uint64_t>(0x000000000000FF00)) << 40) |
-        ((value & static_cast<uint64_t>(0x00000000000000FF)) << 56);
+    return static_cast<uint64_t>((value & (0xFF00000000000000)) >> 56) |
+        static_cast<uint64_t>((value & (0x00FF000000000000)) >> 40) |
+        static_cast<uint64_t>((value & (0x0000FF0000000000)) >> 24) |
+        static_cast<uint64_t>((value & (0x000000FF00000000)) >> 8) |
+        static_cast<uint64_t>((value & (0x00000000FF000000)) << 8) |
+        static_cast<uint64_t>((value & (0x0000000000FF0000)) << 24) |
+        static_cast<uint64_t>((value & (0x000000000000FF00)) << 40) |
+        static_cast<uint64_t>((value & (0x00000000000000FF)) << 56);
 }
 
 void convert_endianness_buffer(void* buffer, size_t size, size_t element_size) {
@@ -681,21 +683,21 @@ void convert_endianness_buffer(void* buffer, size_t size, size_t element_size) {
     switch(element_size) {
         case 2:
             for(size_t i = 0; i < count; i++) {
-                uint16_t* value = (uint16_t*)(ptr + i * 2);
+                uint16_t* value = (uint16_t*)(uintptr_t) (ptr + i * 2);
                 *value = byte_swap16(*value);
             }
             break;
 
         case 4:
             for(size_t i = 0; i < count; i++) {
-                uint32_t* value = (uint32_t*)(ptr + i * 4);
+                uint32_t* value = (uint32_t*)(uintptr_t) (ptr + i * 4);
                 *value = byte_swap32(*value);
             }
             break;
 
         case 8:
             for(size_t i = 0; i < count; i++) {
-                uint64_t* value = (uint64_t*)(ptr + i * 8);
+                uint64_t* value = (uint64_t*)(uintptr_t) (ptr + i * 8);
                 *value = byte_swap64(*value);
             }
             break;
