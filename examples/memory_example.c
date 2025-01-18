@@ -35,21 +35,6 @@ void device_interrupt_handler(void* arg) {
 }
 
 int main() {
-    size_t exec_size = 4096;
-    // Allocate memory for executable code
-    void* exec_mem = allocate_executable_memory(exec_size);
-
-    // Check if memory allocation succeeded
-    if(!exec_mem) {
-        printf("Failed to allocate executable memory\n");
-        return -1;
-    }
-
-    // Align the allocated pointer to 64 bytes for performance or hardware requirements
-    void* aligned_ptr = ptr_align(exec_mem, 64);
-    printf("Original pointer: %p\n", exec_mem);
-    printf("Aligned pointer: %p\n", aligned_ptr);
-
     // Test array for demonstrating endianness conversion
     uint32_t test_array[] = {0x12345678, 0x9ABCDEF0};
     printf("Before endianness conversion: 0x%08X 0x%08X\n", 
@@ -87,28 +72,5 @@ int main() {
         free(cache_test);
     }
 
-    // Get the system's page size and allocate memory aligned to it
-    size_t page_size = (size_t) cpu_page_size();
-    void* protected_mem = aligned_alloc(page_size, page_size);
-
-    if(protected_mem) {
-        // Protect memory as read-only
-        protect_memory(protected_mem, page_size, true, false, false);
-        printf("Memory protected as read-only\n");
-
-        // Read from the protected memory to demonstrate access
-        uint8_t value = *(uint8_t*)protected_mem;
-        printf("Read value: 0x%02X\n", value);
-
-        // Change the memory protection to read-write
-        protect_memory(protected_mem, page_size, true, true, false);
-        printf("Memory protection changed to read-write\n");
-
-        // Free the protected memory
-        free(protected_mem);
-    }
-
-    // Unmap the executable memory previously allocated
-    munmap(exec_mem, exec_size);
     return 0;
 }
