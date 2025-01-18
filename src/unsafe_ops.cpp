@@ -16,7 +16,7 @@
  * along with unsafe_ops. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <unsafe_ops.h>
+#include <unsafe_ops.hpp>
 
 #include <sched.h>
 #include <stdlib.h>
