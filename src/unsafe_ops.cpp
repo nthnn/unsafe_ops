@@ -664,14 +664,14 @@ uint32_t byte_swap32(uint32_t value) {
 }
 
 uint64_t byte_swap64(uint64_t value) {
-    return ((value & 0xFF00000000000000U) >> 56) |
-        ((value & 0x00FF000000000000U) >> 40) |
-        ((value & 0x0000FF0000000000U) >> 24) |
-        ((value & 0x000000FF00000000U) >> 8) |
-        ((value & 0x00000000FF000000U) << 8) |
-        ((value & 0x0000000000FF0000U) << 24) |
-        ((value & 0x000000000000FF00U) << 40) |
-        ((value & 0x00000000000000FFU) << 56);
+    return ((value & static_cast<uint64_t>(0xFF00000000000000)) >> 56) |
+        ((value & static_cast<uint64_t>(0x00FF000000000000)) >> 40) |
+        ((value & static_cast<uint64_t>(0x0000FF0000000000)) >> 24) |
+        ((value & static_cast<uint64_t>(0x000000FF00000000)) >> 8) |
+        ((value & static_cast<uint64_t>(0x00000000FF000000)) << 8) |
+        ((value & static_cast<uint64_t>(0x0000000000FF0000)) << 24) |
+        ((value & static_cast<uint64_t>(0x000000000000FF00)) << 40) |
+        ((value & static_cast<uint64_t>(0x00000000000000FF)) << 56);
 }
 
 void convert_endianness_buffer(void* buffer, size_t size, size_t element_size) {
