@@ -380,6 +380,9 @@ void cache_operation(void* addr, size_t size, cache_operation_t op) {
             default: break;
         }
     #endif
+
+    size = 0;
+    (void) size;
 }
 
 void prefetch_memory(void* addr, size_t size, bool write_hint) {
@@ -666,14 +669,14 @@ uint32_t byte_swap32(uint32_t value) {
 }
 
 uint64_t byte_swap64(uint64_t value) {
-    return static_cast<uint64_t>((value & (0xFF00000000000000)) >> 56) |
-        static_cast<uint64_t>((value & (0x00FF000000000000)) >> 40) |
-        static_cast<uint64_t>((value & (0x0000FF0000000000)) >> 24) |
-        static_cast<uint64_t>((value & (0x000000FF00000000)) >> 8) |
-        static_cast<uint64_t>((value & (0x00000000FF000000)) << 8) |
-        static_cast<uint64_t>((value & (0x0000000000FF0000)) << 24) |
-        static_cast<uint64_t>((value & (0x000000000000FF00)) << 40) |
-        static_cast<uint64_t>((value & (0x00000000000000FF)) << 56);
+    return ((value & UINT64_C(0xFF00000000000000)) >> 56) |
+        ((value & UINT64_C(0x00FF000000000000)) >> 40) |
+        ((value & UINT64_C(0x0000FF0000000000)) >> 24) |
+        ((value & UINT64_C(0x000000FF00000000)) >> 8) |
+        ((value & UINT64_C(0x00000000FF000000)) << 8) |
+        ((value & UINT64_C(0x0000000000FF0000)) << 24) |
+        ((value & UINT64_C(0x000000000000FF00)) << 40) |
+        ((value & UINT64_C(0x00000000000000FF)) << 56);
 }
 
 void convert_endianness_buffer(void* buffer, size_t size, size_t element_size) {
