@@ -19,7 +19,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/mman.h>
 
 #include <unsafe_ops.hpp>
 
@@ -58,7 +57,7 @@ int main() {
     port_write8(EXAMPLE_PORT, 0x55);
 
     // Test memory caching operations
-    void* cache_test = aligned_alloc(64, 1024);
+    void* cache_test = malloc(1024);
     if(cache_test) {
         // Fill memory with a test pattern
         memset(cache_test, 0xAA, 1024);

@@ -44,9 +44,9 @@ void transfer_complete(void* arg) {
 int main() {
     const size_t buffer_size = 4096;
 
-    // Allocate aligned memory for source and destination buffers
-    uint8_t* src_buffer = (uint8_t*) aligned_alloc(4096, buffer_size);
-    uint8_t* dst_buffer = (uint8_t*) aligned_alloc(4096, buffer_size);
+    // Allocate memory for source and destination buffers
+    uint8_t* src_buffer = (uint8_t*) malloc(buffer_size);
+    uint8_t* dst_buffer = (uint8_t*) malloc(buffer_size);
 
     // Check for allocation failures    
     if(!src_buffer || !dst_buffer) {
