@@ -18,9 +18,10 @@
 
 #include <unsafe_ops.hpp>
 
+#include <cstdlib>
+#include <cstring>
+
 #include <sched.h>
-#include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
 
 #define DMA_CTRL_REG        0x00
