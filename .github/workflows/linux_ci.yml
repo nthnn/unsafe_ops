@@ -17,4 +17,5 @@ jobs:
         run: |
           mkdir dist
           g++ -Wall -Wpedantic -Weffc++ -std=c++23 -o dist/basic_example examples/basic_example.cpp src/*.cpp -Iinclude
+          g++ -Wall -Wpedantic -Weffc++ -std=c++23 -o dist/instruction_injection examples/instruction_injection.cpp src/*.cpp -Iinclude   
           g++ -Wall -Wpedantic -Weffc++ -std=c++23 -o dist/memory_example examples/memory_example.cpp src/*.cpp -Iinclude
