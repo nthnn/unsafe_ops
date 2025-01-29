@@ -30,9 +30,16 @@
 #ifndef UNSAFE_OPS_H
 #define UNSAFE_OPS_H
 
-#include <cstdint>
 #include <cstdbool>
 #include <cstddef>
+#include <cstdint>
+#include <cstring>
+
+#ifdef _WIN32
+#   include <windows.h>
+#else
+#   include <sys/mman.h>
+#endif
 
 /**
  * @enum dma_controller_type_t
@@ -122,6 +129,72 @@ typedef enum {
     CACHE_CLEAN,      ///< Clean cache lines.
     CACHE_FLUSH       ///< Flush cache lines.
 } cache_operation_t;
+
+/**
+ * @brief Executes dynamically generated machine code in memory
+ * @details Allocates executable memory, copies the provided machine code into it,
+ *          executes the code, and cleans up the memory afterwards. Uses Windows
+ *          Virtual Memory API for memory management.
+ * 
+ * @tparam T The return type of the generated function
+ * @param code Pointer to the machine code bytes to execute
+ * @param len Length of the machine code in bytes
+ * @return T The result of executing the machine code, or a default-constructed T on error
+ * 
+ * @warning This function should be used with extreme caution as executing arbitrary
+ *          machine code can be dangerous. Ensure the code is from a trusted source.
+ * 
+ * @note Windows-specific implementation using VirtualAlloc/VirtualFree
+ * 
+ * @throws None, but returns default T on failure
+ */
+template<typename T>
+T execute_buffer(uint8_t* code, size_t len) {
+    #ifdef _WIN32
+    void* mem = VirtualAlloc(
+        nullptr, 
+        len,
+        MEM_COMMIT | MEM_RESERVE,
+        PAGE_READWRITE
+    );
+    #else
+    void* mem = mmap(
+        nullptr, len,
+        PROT_READ | PROT_WRITE,
+        MAP_PRIVATE | MAP_ANONYMOUS,
+        -1, 0
+    );
+    #endif
+
+    if(mem == nullptr)
+        return T{};
+
+    memcpy(mem, code, len);
+
+    #ifdef _WIN32
+    DWORD oldProtect;
+    if(!VirtualProtect(mem, len, PAGE_EXECUTE_READ, &oldProtect)) {
+        VirtualFree(mem, 0, MEM_RELEASE);
+        return T{};
+    }
+    #else
+    if(mprotect(mem, len, PROT_READ | PROT_EXEC) == -1) {
+        munmap(mem, len);
+        return T{};
+    }
+    #endif
+
+    T (*func)() = reinterpret_cast<T (*)()>(mem);
+    T result = func();
+
+    #ifdef _WIN32
+    VirtualFree(mem, 0, MEM_RELEASE);
+    #else
+    munmap(mem, len);
+    #endif
+
+    return result;
+}
 
 /**
  * @brief Initialize a DMA context with the specified configuration.
