@@ -2,6 +2,8 @@
 
 `unsafe_ops` is a low-level utility library designed to provide direct access to hardware and memory operations. It is tailored for developers working on embedded systems, operating systems, and performance-critical applications where low-level control and performance optimization are crucial.
 
+- **Instruction Injection**
+    - Injection of instruction sequence on the host CPU directly and dynamically on runtime.
 - **Direct Hardware I/O Access**
     * Read and write to hardware ports (e.g., port_read8, port_write8).
 - **Memory Operations**
