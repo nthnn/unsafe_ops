@@ -30,7 +30,6 @@
 #ifndef UNSAFE_OPS_H
 #define UNSAFE_OPS_H
 
-#include <cstdbool>
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
